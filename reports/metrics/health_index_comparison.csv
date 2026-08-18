@@ -1,0 +1,21 @@
+﻿variant,scorer,focus_auc
+원본,zscore_sum,0.7194841565133254
+원본,mahalanobis,0.7182420131690666
+원본,pca_residual,0.5282730026365334
+원본,pca_residual_var95,0.5291138178052462
+원본,isolation_forest,0.7509845713253195
+baseline 보정,zscore_sum,0.8901182651338376
+baseline 보정,mahalanobis,0.8899884396657411
+baseline 보정,pca_residual,0.8352005377984072
+baseline 보정,pca_residual_var95,0.8728957374424655
+baseline 보정,isolation_forest,0.883322226345516
+원본+MA10,zscore_sum,0.6833681179581536
+원본+MA10,mahalanobis,0.7553297026759745
+원본+MA10,pca_residual,0.5614250492042798
+원본+MA10,pca_residual_var95,0.565099953175789
+원본+MA10,isolation_forest,0.7899820280517825
+baseline 보정+MA10,zscore_sum,0.9427863319933708
+baseline 보정+MA10,mahalanobis,0.9433466681950918
+baseline 보정+MA10,pca_residual,0.9391940795545288
+baseline 보정+MA10,pca_residual_var95,0.7082035240561813
+baseline 보정+MA10,isolation_forest,0.934242603814716

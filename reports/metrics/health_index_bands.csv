@@ -1,0 +1,101 @@
+﻿variant,scorer,band,auc
+원본,zscore_sum,100~125,0.5548131556656024
+원본,zscore_sum,75~100,0.6316978432371273
+원본,zscore_sum,50~75,0.8071651262135923
+원본,zscore_sum,30~50,0.966800291262136
+원본,zscore_sum,0~30,0.9998003236245955
+원본,mahalanobis,100~125,0.5696378771095327
+원본,mahalanobis,75~100,0.6509828104404898
+원본,mahalanobis,50~75,0.785420504854369
+원본,mahalanobis,30~50,0.9051029126213592
+원본,mahalanobis,0~30,0.9862292556634304
+원본,pca_residual,100~125,0.5151394409330814
+원본,pca_residual,75~100,0.521410391498925
+원본,pca_residual,50~75,0.5351273786407766
+원본,pca_residual,30~50,0.5834631067961165
+원본,pca_residual,0~30,0.6797333980582525
+원본,pca_residual_var95,100~125,0.5094592591385938
+원본,pca_residual_var95,75~100,0.5157734912963517
+원본,pca_residual_var95,50~75,0.54243813592233
+원본,pca_residual_var95,30~50,0.5816048543689321
+원본,pca_residual_var95,0~30,0.6678168932038835
+원본,isolation_forest,100~125,0.5798143774027498
+원본,isolation_forest,75~100,0.6746735305667773
+원본,isolation_forest,50~75,0.8272040388349514
+원본,isolation_forest,30~50,0.9626998058252427
+원본,isolation_forest,0~30,0.9996411003236246
+baseline 보정,zscore_sum,100~125,0.6597559783671076
+baseline 보정,zscore_sum,75~100,0.8216937606681416
+baseline 보정,zscore_sum,50~75,0.9584606601941748
+baseline 보정,zscore_sum,30~50,0.9976784466019417
+baseline 보정,zscore_sum,0~30,0.9999947572815534
+baseline 보정,mahalanobis,100~125,0.6636861438717665
+baseline 보정,mahalanobis,75~100,0.8232584343931164
+baseline 보정,mahalanobis,50~75,0.9566383689320388
+baseline 보정,mahalanobis,30~50,0.9972306796116505
+baseline 보정,mahalanobis,0~30,0.9999876375404531
+baseline 보정,pca_residual,100~125,0.6394516843682805
+baseline 보정,pca_residual,75~100,0.7708393373018496
+baseline 보정,pca_residual,50~75,0.8994845048543689
+baseline 보정,pca_residual,30~50,0.9759381553398059
+baseline 보정,pca_residual,0~30,0.9985100970873786
+baseline 보정,pca_residual_var95,100~125,0.6325206066332183
+baseline 보정,pca_residual_var95,75~100,0.7979691357784682
+baseline 보정,pca_residual_var95,50~75,0.947732427184466
+baseline 보정,pca_residual_var95,30~50,0.9951464077669903
+baseline 보정,pca_residual_var95,0~30,0.9999172815533981
+baseline 보정,isolation_forest,100~125,0.6584040040398775
+baseline 보정,isolation_forest,75~100,0.814923306025483
+baseline 보정,isolation_forest,50~75,0.951639067961165
+baseline 보정,isolation_forest,30~50,0.9966500970873786
+baseline 보정,isolation_forest,0~30,0.9999817475728155
+원본+MA10,zscore_sum,100~125,0.5350994494037923
+원본+MA10,zscore_sum,75~100,0.5905548016843514
+원본+MA10,zscore_sum,50~75,0.7760700582524271
+원본+MA10,zscore_sum,30~50,0.9627173786407767
+원본+MA10,zscore_sum,0~30,0.9998798058252427
+원본+MA10,mahalanobis,100~125,0.577494705805695
+원본+MA10,mahalanobis,75~100,0.6806830721137209
+원본+MA10,mahalanobis,50~75,0.8298867572815534
+원본+MA10,mahalanobis,30~50,0.933947281553398
+원본+MA10,mahalanobis,0~30,0.9931954045307443
+원본+MA10,pca_residual,100~125,0.511987196194696
+원본+MA10,pca_residual,75~100,0.5373749470238072
+원본+MA10,pca_residual,50~75,0.5854462912621359
+원본+MA10,pca_residual,30~50,0.666318932038835
+원본+MA10,pca_residual,0~30,0.770086860841424
+원본+MA10,pca_residual_var95,100~125,0.5010836808496775
+원본+MA10,pca_residual_var95,75~100,0.5441600211515956
+원본+MA10,pca_residual_var95,50~75,0.5860147572815534
+원본+MA10,pca_residual_var95,30~50,0.6713328155339806
+원본+MA10,pca_residual_var95,0~30,0.7711867961165049
+원본+MA10,isolation_forest,100~125,0.6103554440607285
+원본+MA10,isolation_forest,75~100,0.7167898565657429
+원본+MA10,isolation_forest,50~75,0.8630863689320388
+원본+MA10,isolation_forest,30~50,0.9696231067961165
+원본+MA10,isolation_forest,0~30,0.9998788349514564
+baseline 보정+MA10,zscore_sum,100~125,0.7423144588518928
+baseline 보정+MA10,zscore_sum,75~100,0.899730239394069
+baseline 보정+MA10,zscore_sum,50~75,0.9857907572815534
+baseline 보정+MA10,zscore_sum,30~50,0.999509708737864
+baseline 보정+MA10,zscore_sum,0~30,1.0
+baseline 보정+MA10,mahalanobis,100~125,0.7410792011468039
+baseline 보정+MA10,mahalanobis,75~100,0.9004962070990042
+baseline 보정+MA10,mahalanobis,50~75,0.9861457087378641
+baseline 보정+MA10,mahalanobis,30~50,0.9993626213592233
+baseline 보정+MA10,mahalanobis,0~30,0.9999989644012945
+baseline 보정+MA10,pca_residual,100~125,0.7371557144718838
+baseline 보정+MA10,pca_residual,75~100,0.8941015043294672
+baseline 보정+MA10,pca_residual,50~75,0.9842325436893203
+baseline 보정+MA10,pca_residual,30~50,0.999111067961165
+baseline 보정+MA10,pca_residual,0~30,0.9999917799352751
+baseline 보정+MA10,pca_residual_var95,100~125,0.548664885645403
+baseline 보정+MA10,pca_residual_var95,75~100,0.6567816136645528
+baseline 보정+MA10,pca_residual_var95,50~75,0.7595637281553398
+baseline 보정+MA10,pca_residual_var95,30~50,0.8407556310679611
+baseline 보정+MA10,pca_residual_var95,0~30,0.9167637540453074
+baseline 보정+MA10,isolation_forest,100~125,0.737315599139897
+baseline 보정+MA10,isolation_forest,75~100,0.8889223184326046
+baseline 보정+MA10,isolation_forest,50~75,0.9795085048543689
+baseline 보정+MA10,isolation_forest,30~50,0.998930291262136
+baseline 보정+MA10,isolation_forest,0~30,0.9999992233009709
