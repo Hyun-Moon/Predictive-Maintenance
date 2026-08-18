@@ -1,0 +1,61 @@
+# =============================================================================
+# 프로젝트 설정 파일
+#
+# "설정을 코드에서 분리한다"는 원칙.
+#   경로, 하이퍼파라미터, 컬럼 이름처럼 자주 바뀌는 값을 여기 모아두면
+#   나중에 실제 회사 설비 데이터로 갈아끼울 때 코드를 거의 안 고쳐도 됩니다.
+# =============================================================================
+
+project:
+  name: predictive-maintenance
+  random_seed: 42          # 결과 재현을 위해 난수 고정
+
+paths:
+  data_raw: data/raw            # 다운로드한 원본 (건드리지 않음)
+  data_interim: data/interim    # 중간 가공본
+  data_processed: data/processed # 모델에 바로 넣는 최종본
+  figures: reports/figures
+  metrics: reports/metrics
+
+# --- 데이터셋 ---------------------------------------------------------------
+dataset:
+  # 메인 데이터셋: NASA C-MAPSS (항공기 엔진 열화 시뮬레이션)
+  primary: cmapss
+  # 검증용 서브 데이터셋: MetroPT-3 (실제 압축공기 설비 - 우리 직무와 가장 유사)
+  secondary: metropt3
+
+cmapss:
+  # FD001 ~ FD004 중 어떤 하위 세트를 쓸지
+  #   FD001: 운전조건 1개 / 고장모드 1개  <- 가장 단순, 여기서 시작
+  #   FD002: 운전조건 6개 / 고장모드 1개
+  #   FD003: 운전조건 1개 / 고장모드 2개
+  #   FD004: 운전조건 6개 / 고장모드 2개  <- 가장 어려움
+  subset: FD001
+  raw_dir: data/raw/cmapss/CMAPSSData
+
+  # 원본 txt 파일에는 컬럼명이 없어서(공백구분 26개 숫자열) 직접 붙여줘야 합니다.
+  columns:
+    id_col: unit            # 엔진 개체 번호 (설비 1대 = unit 1개)
+    time_col: cycle         # 운전 사이클 (= 시간축)
+    op_setting_cols: [op_setting_1, op_setting_2, op_setting_3]
+    n_sensors: 21           # sensor_01 ~ sensor_21
+
+  # RUL(잔여수명) 라벨링 옵션
+  rul:
+    # 실제 현장에서는 "고장 300사이클 전"이나 "100사이클 전"이나
+    # 관리자 입장에서는 똑같이 '정상'입니다. 그래서 RUL 상한을 잘라줍니다.
+    # (C-MAPSS 논문/벤치마크에서 관례적으로 125 또는 130을 씁니다)
+    cap: 125
+
+metropt3:
+  raw_dir: data/raw/metropt3
+
+# --- 모델 -------------------------------------------------------------------
+split:
+  # 시계열이므로 무작위 분할 금지! 반드시 "설비 개체 단위"로 나눕니다.
+  # (같은 엔진의 앞부분이 train, 뒷부분이 test 에 들어가면 성능이 부풀려짐)
+  strategy: group_by_unit
+  val_ratio: 0.2
+
+train:
+  n_jobs: -1
