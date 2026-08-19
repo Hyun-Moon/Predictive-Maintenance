@@ -28,6 +28,7 @@ import numpy as np
 import pandas as pd
 
 from src.data.load import ID_COL, TIME_COL
+from src.features.condition import ConditionNormalizer, adaptive_baseline_mask
 from src.features.health import BASELINE_CYCLES, baseline_table
 
 MA_WINDOWS = (10, 30)
@@ -48,6 +49,8 @@ def build_features(
     df: pd.DataFrame,
     sensors: list[str],
     baseline: pd.DataFrame | None = None,
+    normalizer: ConditionNormalizer | None = None,
+    adaptive_baseline: bool = False,
 ) -> tuple[pd.DataFrame, dict[str, list[str]]]:
     """
     센서 원본에서 예측용 특징을 만든다.
@@ -56,6 +59,11 @@ def build_features(
     ----------
     baseline : 미리 계산해 둔 설비별 기준선. None 이면 이 df 로 직접 계산.
                (train 과 test 는 서로 다른 설비이므로 각자 자기 기준선을 씁니다)
+    normalizer : 운전조건별 정규화기. 주면 센서값을 **먼저** 조건 z점수로 바꿉니다.
+               운전조건이 여러 개인 데이터(FD002/FD004)에서는 이걸 안 주면
+               조건 차이가 열화 신호를 덮어버립니다. (조건 차이가 열화의 15~93배)
+    adaptive_baseline : 설비 길이에 맞춰 기준선 구간을 조절할지.
+               관측이 짧은 설비까지 다루려면 켜야 합니다.
 
     Returns
     -------
@@ -66,15 +74,27 @@ def build_features(
     out = df.copy().sort_values([ID_COL, TIME_COL]).reset_index(drop=True)
     groups: dict[str, list[str]] = {}
 
+    # --- (0) 운전조건 정규화 -------------------------------------------------
+    # 반드시 다른 모든 처리보다 먼저 합니다.
+    # 조건 효과를 남겨둔 채 설비별 기준선을 잡으면, 그 기준선이
+    # "이 설비가 주로 어떤 조건으로 돌았는지"를 담게 되어 의미가 없어집니다.
+    if normalizer is not None:
+        out[sensors] = normalizer.transform(out)
+
     # --- (1) 운전 시간 -------------------------------------------------------
     groups["cycle"] = [TIME_COL]
 
-    # --- (2) 센서 원본 -------------------------------------------------------
+    # --- (2) 센서 (정규화를 켰으면 조건 z점수) --------------------------------
     groups["raw"] = list(sensors)
 
     # --- (3) 설비별 기준선 대비 편차 ----------------------------------------
     if baseline is None:
-        baseline = baseline_table(out, sensors, BASELINE_CYCLES)
+        if adaptive_baseline:
+            base_rows = out[adaptive_baseline_mask(out)]
+            baseline = base_rows.groupby(ID_COL)[sensors].agg(["mean", "std"])
+        else:
+            baseline = baseline_table(out, sensors, BASELINE_CYCLES)
+
     dev_cols = []
     for c in sensors:
         out[f"{c}_dev"] = out[c] - out[ID_COL].map(baseline[(c, "mean")])
@@ -116,6 +136,14 @@ def stack_feature_sets(groups: dict[str, list[str]]) -> dict[str, list[str]]:
     return sets
 
 
-def usable_rows(df: pd.DataFrame, min_cycle: int = BASELINE_CYCLES) -> pd.Series:
-    """기준선이 확정된 이후 구간만 사용 (위 인과성 규칙 참고)."""
+def usable_rows(
+    df: pd.DataFrame, min_cycle: int = BASELINE_CYCLES, adaptive: bool = False
+) -> pd.Series:
+    """
+    기준선이 확정된 이후 구간만 사용 (위 인과성 규칙 참고).
+
+    adaptive=True 면 설비마다 기준선 길이가 다르므로 그에 맞춰 잘라냅니다.
+    """
+    if adaptive:
+        return ~adaptive_baseline_mask(df)
     return df[TIME_COL] > min_cycle
