@@ -100,6 +100,69 @@ def main() -> None:
 
     save(fig, "20_program_flow.png")
 
+    integration_diagram()
+
+
+def integration_diagram() -> None:
+    """
+    기존 통합관제 시스템과의 계층 관계.
+
+    핵심 메시지: 이 프로그램은 **제어 계층이 아니라 분석 계층**이며,
+    제어 루프에 개입하지 않는다. 그래서 기존 관제 시스템 위에 얹을 수 있다.
+    """
+    fig, ax = plt.subplots(figsize=(10, 5.4))
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+
+    def layer(y, h, title, subtitle, accent, fill):
+        ax.add_patch(FancyBboxPatch(
+            (0.10, y), 0.80, h, boxstyle="round,pad=0.008,rounding_size=0.02",
+            linewidth=1.4, edgecolor=accent, facecolor=fill, zorder=2))
+        ax.text(0.155, y + h * 0.63, title, ha="left", va="center",
+                fontsize=11.5, fontweight="bold", color=accent, zorder=4)
+        ax.text(0.155, y + h * 0.27, subtitle, ha="left", va="center",
+                fontsize=9.5, color=INK, zorder=4)
+
+    layer(0.70, 0.20, "분석 계층  —  설비 건강도 감시 (신규)",
+          "정상 기준선 학습 · 이탈도 산출 · 경보 판정 · 원인 항목 제시",
+          CAT[1], "#FDF1EA")
+    layer(0.395, 0.20, "제어 계층  —  기존 통합관제 시스템 (b.IoT 등)",
+          "데이터 수집 · 감시 · 제어 · 경보 · 트렌드 기록",
+          CAT[0], "#EAF2FC")
+    layer(0.09, 0.20, "현장 설비",
+          "공조기 · 펌프 · 냉동기 · 전력 · 조명",
+          INK_SUB, "#F4F4F2")
+
+    # 분석 <-> 제어
+    ax.add_patch(FancyArrowPatch((0.30, 0.60), (0.30, 0.695),
+                                 arrowstyle="-|>,head_width=4,head_length=8",
+                                 linewidth=1.6, color=CAT[0], zorder=5))
+    ax.text(0.315, 0.648, "계측값 읽기", ha="left", va="center",
+            fontsize=9, color=CAT[0], fontweight="bold")
+
+    ax.add_patch(FancyArrowPatch((0.72, 0.695), (0.72, 0.60),
+                                 arrowstyle="-|>,head_width=4,head_length=8",
+                                 linewidth=1.6, color=CAT[1], linestyle="--", zorder=5))
+    ax.text(0.705, 0.648, "건강도 반환 (선택)", ha="right", va="center",
+            fontsize=9, color=CAT[1], fontweight="bold")
+
+    # 제어 <-> 설비
+    ax.add_patch(FancyArrowPatch((0.50, 0.385), (0.50, 0.295),
+                                 arrowstyle="<|-|>,head_width=4,head_length=8",
+                                 linewidth=1.6, color=INK_SUB, zorder=5))
+    ax.text(0.515, 0.340, "BACnet / Modbus", ha="left", va="center",
+            fontsize=9, color=INK_SUB)
+
+    ax.text(0.5, 0.035,
+            "제어 루프에 개입하지 않음 — 기존 관제 기능과 독립적으로 동작",
+            ha="center", va="center", fontsize=9.5, color=INK_SUB)
+
+    ax.text(0.5, 0.955, "기존 통합관제 시스템과의 계층 관계",
+            ha="center", va="center", fontsize=13, fontweight="bold", color=INK)
+
+    save(fig, "21_integration_layers.png")
+
 
 if __name__ == "__main__":
     main()
